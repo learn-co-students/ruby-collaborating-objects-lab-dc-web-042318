@@ -1,6 +1,5 @@
 class Artist
-  attr_accessor :name
-  attr_reader :songs
+  attr_accessor :name, :songs
 
   @@all = []
 
@@ -21,12 +20,18 @@ class Artist
     @@all
   end
 
-  def print_songs
-    songs.map { |s| puts s.name }
+  def self.find_or_create_by_name(artist)
+    to_add = Artist.new(artist)
+    search = @@all.find { |a| a.name == artist }
+    if search.nil?
+      @@all << to_add
+      to_add
+    else
+      search
+    end
   end
 
-  def self.find_or_create_by_name(artist)
-    names = @@all.map(&:name).collect
-    Artist.new(artist) unless names.include?(artist)
+  def print_songs
+    songs.each { |s| puts s.name }
   end
 end
